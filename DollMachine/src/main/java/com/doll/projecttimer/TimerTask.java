@@ -8,6 +8,6 @@ import org.springframework.stereotype.Controller;
 public class TimerTask {
 	@Scheduled(cron="0 * * * * ?") //无返回值
 	public void say(){
-		System.out.println("say hello");
+		System.out.println("say hello say hello say hello");
 	}
 }

@@ -1,0 +1,100 @@
+h1, h2, h3, h4, h5, h6 {
+font-weight: 300 !important;
+font-family: 'Microsoft Yahei','Open Sans','Segoe UI';
+
+}
+
+body{
+	
+font-family: 'Microsoft Yahei','Open Sans','Segoe UI';
+}
+
+
+.page-header {
+  padding-left: 0px;
+}
+.navbar .navbar-brand small img {
+  height: 36px;
+  width: auto;
+}
+
+div.dataTables_length {
+  position: relative;
+  top: 0px;
+  right: 0px;
+  float: left;
+  padding-top: 4px;
+  padding-right: 15px;
+}
+
+.form-inline .control-label {
+  padding-top: 7px;
+  margin-bottom: 0;
+  text-align: right;
+}
+.form-inline .form-group {
+  margin-bottom: 0px;
+  padding: 2px;
+  width: 500px;
+}
+
+.form-btn{
+	margin-top:5px;
+	margin-right:15px;
+}
+
+.dataTables_wrapper  input[type=checkbox]~.text, .dataTables_wrapper  input[type=radio]~.text{
+	position: absolute;
+	margin-left: -15px;
+	margin-top: -3px;
+}
+
+.dataTables_wrapper .checkbox label, .dataTables_wrapper  .radio label {
+  min-height: 18px;
+/*   padding-left: 20px; */
+  margin-bottom: 0;
+  font-weight: 400;
+  cursor: pointer;
+  height: 18px;
+}
+
+.checkbox, .radio {
+  position: relative;
+  display: inline;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.checkbox+.checkbox, .radio+.radio {
+  margin-top: -5px;
+  margin-left: 15px;
+}
+
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: middle;
+  border-top: 1px solid #ddd;
+}
+
+.widget-buttons {
+  display: inline-block;
+  padding: 0 5px;
+  line-height: 34px;
+  position: relative;
+  text-align: left;
+  height: 32px;
+}
+
+/* .form-inline .form-control { */
+/*   display: inline-block; */
+/*   width: 100%; */
+/*   vertical-align: middle; */
+/* } */
+
+
+.modal-info .modal-header {
+color: #57b5e3;
+border-bottom: 3px solid #57b5e3;
+}

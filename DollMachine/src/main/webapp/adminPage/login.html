@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>login.html</title>
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+a, img {
+	border: 0;
+}
+
+a {
+	text-decoration: none
+}
+
+#bg  img {
+	width: 100%;
+	height: 1080px;
+}
+
+#login {
+	background-image: url(../image/stat_login.png);
+	background-repeat: no-repeat;
+	width: 492px;
+	height: 519px;
+	margin:0 auto;
+	text-align: center;
+	margin-top: 120px;
+	display: block;
+}
+
+.login_input {
+	height: 46px;
+	width: 260px;
+	font-size: 15px;
+	margin-top: 1px;
+	padding-top: 13px;
+	padding-bottom: 13px;
+	margin-left: 47px;
+	border: 0px;
+	outline: none;
+	text-align: left;
+}
+
+#login_a {
+	margin-top: 15px;
+	margin-bottom: 30px;
+}
+
+#login_a a:link {
+	color: #55C1F2;
+}
+
+#login_a a:visited {
+	color: #FF0000;
+}
+
+#login_a a:hover {
+	color: #00FF00;
+}
+
+.button {
+	border: 0px;
+	width: 311px;
+	height: 49px;
+	background-image: url(../image/login_button.jpg);
+	background-repeat: no-repeat;
+	cursor: pointer;
+	display: inline-block;
+}
+
+#input_userName {
+	width: 311px;
+	height: 48px;
+	border: 0px;
+	background-image: url(../image/login.jpg);
+	background-repeat: no-repeat;
+	margin-bottom: 30px;
+	display: inline-block;
+	margin-top: 220px;
+}
+
+#input_password {
+	width: 311px;
+	height: 48px;
+	border: 0px;
+	background-image: url(../image/password.jpg);
+	background-repeat: no-repeat;
+	display: inline-block;
+}
+</style>
+</head>
+
+<body bgcolor="#c9ebf4" style="background-color:#6db76e;">
+	<div id="container">
+		<div id="login">
+			<form action="" method="post" id="loginForm"
+				name="loginForm">
+				<div id="input_userName">
+					<input name="userName" maxlength="20" id="userName" type="text"
+						value="" class="login_input" />
+				</div>
+				<div id="input_password">
+					<input name="password" maxlength="20" id="password" type="password"
+						value="" class="login_input" />
+				</div>
+				<div id="login_a">
+				</div>
+				<div class="button"
+					onmouseover="this.style.backgroundImage='url(../image/login_button_over.jpg)'"
+					onmouseout="this.style.backgroundImage='url(../image/login_button.jpg)'"></div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
+<script type="text/javascript" src="../js/jquery.min.js"> </script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".button").click(function(){
+		if($.trim($("#userName").val())==''){
+			alert("用户名不能为空");
+			return false;
+		}
+		if($.trim($("#password").val())==''){
+			alert("密码不能为空");
+			return false;
+		}
+		var formParam = $("#loginForm").serialize();//序列化表格内容为字符串
+		$.ajax({
+			type : "post",
+			url : "/admin/validate",
+			data : formParam,
+			success : function(data, textStatus){
+				if(data=='success'){
+					location.href="/manager";
+				}else{
+					location.href="/manager";
+				}
+			}
+		});
+	});
+});
+</script>

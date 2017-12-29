@@ -82,6 +82,7 @@
 	            <mvc:mapping path="/**"/>
 	            <mvc:exclude-mapping path="/admin/**" />
 	            <mvc:exclude-mapping path="/adminPage/login.html" />
+	            <mvc:exclude-mapping path="/net/**" />
 	            <bean class="com.doll.interceptor.AdminManagerInterceptor" />
         	</mvc:interceptor>  
 	 </mvc:interceptors>

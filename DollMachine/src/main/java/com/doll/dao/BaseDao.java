@@ -2,6 +2,7 @@ package com.doll.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import com.doll.utils.Page;
 
@@ -137,6 +138,14 @@ public interface BaseDao<T, PK extends Serializable> {
 	 * @return
 	 */
 	T getHqlObj(String hql, String... parameters);
+	
+	/**
+	 * 得到一条唯一数据(加锁)
+	 * @param hql
+	 * @param parameters
+	 * @return
+	 */
+	T getHqlObjForUpdate(String hql, String... parameters);
 
 	/**
 	 * 根据传来的分页参数查询实体集合
@@ -167,5 +176,41 @@ public interface BaseDao<T, PK extends Serializable> {
 	 * @return
 	 */
 	Integer getCount(String sql, String... parameters);
+	
+	/**
+	 * 执行带输出参数存储过程(in and out)
+	 * @param callSql
+	 * @param inParameters
+	 * @return
+	 */
+	public int prepareCallAndReturn(final String callSql,final Object... inParameters);
+	
+	/**
+	 * 执行无参数返回存储过程(in)
+	 * @param callSql
+	 * @param inParameters
+	 */
+	public void prepareCallNoReturn(final String callSql,final Object... inParameters);
+	/**
+	 * 执行sql语句无结果集
+	 * @param sql
+	 * @param params
+	 * @return
+	 */
+	public int executeSql(String sql, Object... params);
+	
+	/**
+	 * 执行hql语句无结果集
+	 * @param sql
+	 * @param params
+	 * @return
+	 */
+	public int updateHql(String hql, String... params);
+	
+	public Object getObject(String sql, Object... params);
+	
+	public Object getObject2List(String sql, Object... params);
+
+	public Map<String, Object> getObjectToMap(String sql, Object[] parameters);
 	
 }

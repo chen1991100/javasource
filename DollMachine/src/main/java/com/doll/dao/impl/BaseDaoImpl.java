@@ -3,13 +3,23 @@ package com.doll.dao.impl;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.hibernate.LockOptions;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.jdbc.ReturningWork;
+import org.hibernate.jdbc.Work;
+import org.hibernate.transform.Transformers;
 
 import com.doll.dao.BaseDao;
 import com.doll.utils.Page;
@@ -181,6 +191,106 @@ public class BaseDaoImpl<T, PK extends Serializable> implements BaseDao<T, PK> {
 			}
 		}
 		return query;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public T getHqlObjForUpdate(String hql, String... parameters) {
+		return (T) getQuery(hql, parameters).setLockOptions(LockOptions.UPGRADE).uniqueResult();
+	}
+	
+	@Override
+	public int prepareCallAndReturn(final String callSql, final Object... parameters) {
+		return getSession().doReturningWork(new ReturningWork<Integer>() {
+            @Override
+            public Integer execute(Connection connection) throws SQLException {
+                CallableStatement cs = connection.prepareCall(callSql);
+                int parametersLength = parameters.length;
+                for(int i=1;i<=parametersLength;i++){
+                    cs.setObject(i, parameters[i-1]);
+                }
+                cs.registerOutParameter(parametersLength+1,Types.INTEGER);
+                cs.executeUpdate();
+                return cs.getInt(parametersLength+1);
+            }
+        });
+	}
+
+	@Override
+	public void prepareCallNoReturn(final String callSql, final Object... parameters) {
+		getSession().doWork(new Work() {
+            @Override
+            public void execute(Connection connection) throws SQLException {
+                CallableStatement cs = connection.prepareCall(callSql);
+                int parametersLength = parameters.length;
+                for(int i=1;i<=parametersLength;i++){
+                    cs.setObject(i, parameters[i-1]);
+                }
+                cs.executeUpdate();
+            }
+        });
+		
+	}
+
+	@Override
+	public int executeSql(String sql, Object... parameters) {
+		SQLQuery query = getSession().createSQLQuery(sql);
+		if (parameters != null && parameters.length>0) {
+			for (int i = 0; i < parameters.length; i++) {
+				query.setParameter(i, parameters[i]);
+			}
+		}
+		return query.executeUpdate();
+	}
+
+	@Override
+	public Object getObject(String sql, Object... parameters) {
+		SQLQuery query = getSession().createSQLQuery(sql);
+		if (parameters != null && parameters.length>0) {
+			for (int i = 0; i < parameters.length; i++) {
+				query.setParameter(i, parameters[i]);
+			}
+		}
+		//query.setLockOptions(LockOptions.UPGRADE);
+		return query.uniqueResult();
+	}
+	
+	@Override
+	public List<T> getObject2List(String sql, Object... parameters) {
+		SQLQuery query = getSession().createSQLQuery(sql);
+		if (parameters != null && parameters.length>0) {
+			for (int i = 0; i < parameters.length; i++) {
+				query.setParameter(i, parameters[i]);
+			}
+		}
+		/*query.addEntity(entityClass);
+		return query.list();*/
+		return query.setResultTransformer(Transformers.aliasToBean(entityClass)).list();
+	}
+	
+	@Override
+	public Map<String, Object> getObjectToMap(String sql, Object... parameters) {
+		SQLQuery query = getSession().createSQLQuery(sql);
+		if (parameters != null && parameters.length>0) {
+			for (int i = 0; i < parameters.length; i++) {
+				query.setParameter(i, parameters[i]);
+			}
+		}
+		return (Map<String, Object>) query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).uniqueResult();
+	}
+
+	public boolean validateTableNameExist(String table_name) {
+		String  getName = (String) getObject("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE  TABLE_NAME=?",table_name);
+		if(getName!=null&&getName.equals(table_name)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	@Override
+	public int updateHql(String hql, String... parameters) {
+		return getQuery(hql, parameters).executeUpdate();
 	}
 	
 }
